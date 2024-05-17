@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\A\\NextJs\\starter-pack-postgresql\\logs\\winston\\errors\\.478bb2b2c9b62eea8318b0ed4e046a54a3e95b2e-audit.json",
+    "files": [
+        {
+            "date": 1715920467413,
+            "name": "D:\\A\\NextJs\\starter-pack-postgresql\\logs\\winston\\errors\\phu-2024-17-05-10-error.log",
+            "hash": "e2591ff043ad3884ab011375f0fb4b428533e9e56da58f20c5bbb03698acb6da"
+        }
+    ],
+    "hashType": "sha256"
+}
