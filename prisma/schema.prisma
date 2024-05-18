@@ -12,3 +12,89 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      UserRole  @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  reviews   Review[]
+
+  @@map("users")
+}
+
+model Product {
+  id          String      @id @default(uuid()) 
+  ProductName        String
+  description String
+  discount    Float
+  price       Float
+  category    Category    @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  stock       Int
+  dimensions  Dimensions?
+  material    String
+  color       String
+  images      Image[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  reviews     Review[]
+  
+  @@map("products")
+}
+
+model Category {
+  id           String     @id @default(uuid())
+  categoryName String @unique
+  description  String
+  products     Product[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  
+  @@map("categories")
+}
+
+model Dimensions {
+  id        String   @id @default(uuid())
+  length    Float
+  width     Float
+  height    Float
+  weight    Float
+  productId String   @unique
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@map("dimensions")
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  url       String
+  altText   String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@map("images")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("reviews")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  MANAGER
+  SUPER_ADMIN
+}
