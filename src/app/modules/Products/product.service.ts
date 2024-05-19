@@ -6,9 +6,27 @@ import { IPaginationOptions } from "../../interfaces/pagination";
 import { IUser } from "../User/user.interface";
 import { IProduct, IProductFilterRequest } from "./product.interface";
 import { productSearchableFields } from "./product.constants";
+import { IUploadFile } from "../../../interfaces/file";
+import { FileUploadHelper } from "../../../helpers/fileUploadHelper";
+import { Request } from "express";
 
-const createProduct = async (payload: any) => {
-  console.log(payload);
+const createProduct = async (req: Request) => {
+  console.log(req.body);
+  const payload = req?.body;
+  const file = req.file as IUploadFile;
+
+  if (file) {
+    const uploadedProfileImage = await FileUploadHelper.uploadToCloudinary(
+      file
+    );
+    req.body.image = uploadedProfileImage?.secure_url;
+  }
+
+  // Ensure images is an array
+  const images = payload.images || [];
+  if (req.body.image) {
+    images.push({ url: req.body.image });
+  }
 
   const result = await prisma.$transaction(async (tx) => {
     const {
@@ -21,7 +39,6 @@ const createProduct = async (payload: any) => {
       material,
       color,
       dimensions,
-      images,
     } = payload;
 
     // Create the product
@@ -35,7 +52,6 @@ const createProduct = async (payload: any) => {
         stock,
         material,
         color,
-        
       },
     });
 
@@ -56,7 +72,6 @@ const createProduct = async (payload: any) => {
         tx.image.create({
           data: {
             url: image.url,
-            altText: image.altText,
             productId: createdProduct.id,
           },
         })
@@ -72,6 +87,7 @@ const createProduct = async (payload: any) => {
 
   return result;
 };
+
 
 
 // const getAllProducts = async () => {

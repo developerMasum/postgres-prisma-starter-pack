@@ -1,8 +1,9 @@
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import * as fs from 'fs';
-import { ICloudinaryResponse, IUploadFile } from '../interfaces/file';
+
 import config from '../config';
+import { ICloudinaryResponse, IUploadFile } from '../interfaces/file';
 
 cloudinary.config({
     cloud_name: config.cloudinary.cloud_name,

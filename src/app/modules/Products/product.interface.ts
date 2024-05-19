@@ -1,6 +1,8 @@
 export type IProductFilterRequest = {
   searchTerm?: string | undefined;
   productName?: string | undefined;
+  color?: string | undefined;
+  category?: string | undefined;
 };
 
 // type User = {
@@ -34,7 +36,6 @@ type IDimensions = {
 type IImage = {
   id: string;
   url: string;
-  altText: string;
   productId: string;
 };
 
@@ -50,7 +51,7 @@ type IReview = {
 
 export type IProduct = {
   id: string;
-  name: string;
+  productName: string;
   description: string;
   discount: number;
   price: number;

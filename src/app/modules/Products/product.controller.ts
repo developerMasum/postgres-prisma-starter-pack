@@ -10,7 +10,7 @@ import { productSearchableFields } from "./product.constants";
 const createProduct = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
-    const result = await ProductServices.createProduct(req.body);
+    const result = await ProductServices.createProduct(req);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -22,7 +22,12 @@ const createProduct = catchAsync(
 
 const getAllProducts = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, productSearchableFields);
-    const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+    const options = pick(req.query, [
+      "limit",
+      "page",
+      "sortBy",
+      "sortOrder",
+    ]);
   const result = await ProductServices.getAllProducts(filters,options);
   sendResponse(res, {
     statusCode: httpStatus.OK,
